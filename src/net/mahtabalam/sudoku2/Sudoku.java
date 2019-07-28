@@ -25,40 +25,35 @@ public class Sudoku {
 
 	private boolean solve(int rowIndex, int columnIndex) {
 		
-		// Move to the first Row
+		// If we filled all the columns of a row, Move to the next Row
 		if( columnIndex == BOARD_SIZE){
 			rowIndex = rowIndex + 1;
-		}
-				
-	
-		if( rowIndex == BOARD_SIZE && columnIndex == BOARD_SIZE ){
-			return true;
-		}
-		
-		// Move to the first Row
-		if( columnIndex == BOARD_SIZE){
+			// Base case
+			if( rowIndex == BOARD_SIZE ) {
+				return true;
+			}
+			// If not the base case, we still need to fill remaining rows
+		    // So set the columnIndex to zero, for the next row
 			columnIndex = 0;
 		}
-		
-		
-		if ( sudokuMatrix[rowIndex][columnIndex] != 0 ) { // skip filled cells
+						
+		if ( sudokuMatrix[rowIndex][columnIndex] != 0 ) { 
+			// skip filled cells
 			return solve(rowIndex, columnIndex + 1);
 		}
 
 		for (int number = MIN_NUMBER; number <= MAX_NUMBER; number++) {
-			
 			if ( isValid(rowIndex, columnIndex, number) ) {
-				
 				sudokuMatrix[rowIndex][columnIndex] = number;
 				
-				if ( solve(rowIndex, columnIndex + 1) )
+				if ( solve(rowIndex, columnIndex + 1) ) {
 					return true;
+				}	
 			}
 		}
 		
 	    //  BACKTRACK !!!
 		sudokuMatrix[rowIndex][columnIndex] = 0; 
-		
 		return false;
 	}
 
@@ -88,11 +83,11 @@ public class Sudoku {
 
 	private void printResult() {
 		
-		for (int i = 0; i < BOARD_SIZE; ++i) {
+		for (int i = 0; i < BOARD_SIZE; i++) {
 			
 			if(i % 3 == 0) System.out.println(" ");
 			
-			for (int j = 0; j < BOARD_SIZE; ++j) {
+			for (int j = 0; j < BOARD_SIZE; j++) {
 				
 				if (j % 3 == 0) System.out.print(" ");
 				System.out.print(sudokuMatrix[i][j]+" ");
